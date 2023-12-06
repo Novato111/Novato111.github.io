@@ -2,30 +2,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0 user-scalable=0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Length Unit Converter</title>
     <style>
         body {
             font-family: 'Arial', sans-serif;
-            background-color: #f5f5f5;
+            background-color: #EEEEEE;
             margin: 0;
             padding: 0;
-            display: flex;
+           
             flex-direction: column;
             align-items: center;
             min-height: 100vh;
+           
         }
 
         header {
-            background-color: #333;
+            background-color: #222831;
             color: #fff;
             padding: 20px;
             text-align: center;
             width: 100%;
+            margin-left:0;
         }
 
         #converter-container {
-            background-color: #fff;
+            background-color: #a8a8a8;
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
@@ -73,7 +75,7 @@
         }
 
         button {
-            background-color: #4caf50;
+            background-color: #00ADB5;
             color: #fff;
             padding: 10px;
             border: none;
@@ -87,12 +89,84 @@
         }
 
         #result {
+            font-weight: 400;
             margin-top: 20px;
             font-size: 18px;
-            color: #333;
+            color: #000000;
             width: 100%;
             text-align: left;
         }
+        .input-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+        padding: 10px; /* Added padding */
+    }
+
+    .input-group label {
+        margin-right: 50px;
+        color: #000000;
+        text-align: left;
+        width: 60px;
+    }
+
+    .input-group select,
+    .input-group input,
+    .input-group button {
+        width: calc(100% - 70px);
+        padding: 20px;
+        height: 80px;
+        box-sizing: border-box;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+   
+    #toUnit,#fromUnit{
+        font-size: 20px;
+        font-weight: 400;
+        background-color: rgb(204, 204, 204);
+        
+    }
+    #buttons-container {
+            
+        display: flex;
+        justify-content: space-between;
+        width: 50%;
+        height: 50px;
+        padding: 10px; /* Added padding */
+        margin-right:30px;
+    }
+.pathbar{
+    margin: 10px;
+    margin-left: 50px;
+    padding: 5px;
+   
+    
+}
+.pathbar-items{
+    text-decoration:none;
+    padding: 10px;
+    font-size: 18px;
+}
+.pathbar-items:hover{
+    background-color: gray;
+}
+.perma-labels{
+    font-size: 20px;
+    margin-right: 00px;
+}
+.i-box{
+    font-size: 20px;
+    font-weight: 700;
+}
+.btn{
+    font-size: 20px;
+   border-radius: 12px;
+  
+}
+.btn:hover{
+    background-color: gold;
+}
     </style>
 </head>
 <body>
@@ -100,13 +174,16 @@
 <header>
     <h1>Unit Converter Website</h1>
 </header>
+<div class="pathbar"><a class="pathbar-items" href="">Home</a>
 
+
+</div>
 <div id="converter-container">
     <h2>Length Unit Converter</h2>
-
+    
     <div class="input-group">
-        <label for="fromUnit">From:</label>
-        <input type="number" id="inputLengthFrom" placeholder="Enter length..." />
+        <label class="perma-labels from" for="fromUnit">From:</label>
+        <input class="i-box" type="number" id="inputLengthFrom" placeholder="Enter length..." />
         <select id="fromUnit">
             <!-- Add length units as needed -->
             <option value="meters">Meters</option>
@@ -120,8 +197,8 @@
     </div>
 
     <div class="input-group">
-        <label for="toUnit">To:</label>
-        <input type="number" id="inputLengthTo" placeholder="Enter length..." />
+        <label class="perma-labels" for="toUnit">To:</label>
+        <input class="i-box"type="number" id="inputLengthTo" placeholder="Enter length..." />
         <select id="toUnit">
             <!-- Add length units as needed -->
             <option value="meters">Meters</option>
@@ -135,8 +212,8 @@
     </div>
 
     <div id="buttons-container">
-        <button onclick="convertLength()">Convert</button>
-        <button onclick="swapUnits()">Swap</button>
+        <button class="btn" onclick="convertLength()">Convert</button>
+        <button class="btn" onclick="swapUnits()">Swap</button>
     </div>
 
     <div id="result"></div>
@@ -145,7 +222,6 @@
 <script>
     function convertLength() {
         const inputLengthFrom = parseFloat(document.getElementById('inputLengthFrom').value);
-        const inputLengthTo = parseFloat(document.getElementById('inputLengthTo').value);
         const fromUnit = document.getElementById('fromUnit').value;
         const toUnit = document.getElementById('toUnit').value;
 
@@ -162,9 +238,9 @@
         if (!isNaN(inputLengthFrom)) {
             const result = inputLengthFrom * (units[fromUnit] / units[toUnit]);
             document.getElementById('result').innerText = `${inputLengthFrom} ${fromUnit} is equal to ${result.toFixed(4)} ${toUnit}`;
-        } else if (!isNaN(inputLengthTo)) {
-            const result = inputLengthTo / (units[fromUnit] / units[toUnit]);
-            document.getElementById('result').innerText = `${inputLengthTo} ${toUnit} is equal to ${result.toFixed(4)} ${fromUnit}`;
+            
+            // Update inputLengthTo with converted value
+            document.getElementById('inputLengthTo').value = result.toFixed(4);
         } else {
             document.getElementById('result').innerText = 'Please enter a valid length.';
         }
@@ -183,7 +259,10 @@
 
     // Bind the conversion function to input events for real-time updates
     document.getElementById('inputLengthFrom').addEventListener('input', convertLength);
-    document.getElementById('inputLengthTo').addEventListener('input', convertLength);
+    document.getElementById('inputLengthTo').addEventListener('input', function () {
+        // Handle any specific functionality for inputLengthTo
+        // Note: You may want to update the result based on inputLengthTo as well
+    });
 </script>
 
 </body>
